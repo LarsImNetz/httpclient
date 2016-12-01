@@ -5,9 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpRequest;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.InputStreamBody;
@@ -20,25 +22,32 @@ public class PostFile {
 	public void post() throws Exception {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		try {
-
 			HttpPost postRequest = new HttpPost("http://qa.moonserver.homenet.org/upload.php");
 			// postRequest.addHeader("Authorization",authHeader);
+//			String boundary = "-------------" + System.currentTimeMillis();
+// 			postRequest.addHeader("Content-type", "multipart/form-data; boundary=" + boundary);
 			
 			File file = new File("src/main/resources/justATest.txt");
-			// TODO: das upload definitiv stärker schützen!
+			// TODO: das upload definitiv stärker schützen! Wir wollen nur bestimmte Typen zulassen.
 			// File file = new File("src/main/resources/killer.php");
 			if (!file.exists()) {
 				throw new FileNotFoundException("file: " + file.getAbsolutePath());
 			}
 
 			FileBody bin = new FileBody(file, ContentType.DEFAULT_TEXT, "just-a-test.txt");
+
 			FileInputStream fis = new FileInputStream(file);
-			InputStreamBody isb = new InputStreamBody(fis,  ContentType.DEFAULT_TEXT);
+			InputStreamBody isb = new InputStreamBody(fis, ContentType.DEFAULT_TEXT);
+
 			StringBody comment = new StringBody("A binary file of some kind", ContentType.TEXT_PLAIN);
 
-			MultipartEntityBuilder entityBuilder = MultipartEntityBuilder.create();
-			entityBuilder.addPart("other", isb).addPart("comment", comment).addPart("userfile", bin);
-			HttpEntity httpEntity = entityBuilder.build();
+			HttpEntity httpEntity = MultipartEntityBuilder.create()
+//					.setMode(HttpMultipartMode.BROWSER_COMPATIBLE)
+//					.setBoundary(boundary)
+					.addPart("other", isb)
+					.addPart("comment", comment)
+					.addPart("userfile", bin)
+					.build();
 
 			postRequest.setEntity(httpEntity);
 
