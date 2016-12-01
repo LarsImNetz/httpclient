@@ -4,12 +4,12 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 
-<parent>
-  <groupId>org.lla-private</groupId>
-  <artifactId>globalConfigPom</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <relativePath>../globalConfigPom/pom.xml</relativePath>
-</parent>
+	<parent>
+		<groupId>org.lla-private</groupId>
+		<artifactId>globalConfigPom</artifactId>
+		<version>1.0-SNAPSHOT</version>
+		<relativePath>../globalConfigPom/pom.xml</relativePath>
+	</parent>
 
 	<groupId>org.homenet.moonserver</groupId>
 	<artifactId>javaapplicationsample</artifactId>
@@ -46,6 +46,21 @@
 			<artifactId>mockito-all</artifactId>
 			<version>${mockito.version}</version>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.2</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>4.5.2</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -89,6 +104,15 @@
 				</executions>
 			</plugin>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>true</downloadJavadocs>
+				</configuration>
+			</plugin>
 		</plugins>
+
 	</build>
 </project>

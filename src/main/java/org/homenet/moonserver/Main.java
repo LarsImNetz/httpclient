@@ -16,8 +16,9 @@ public class Main {
 		LOGGER.trace("c'tor main()");
 	}
 
-	public static void main(String[] args) {
-
+	public static void main(String[] args) throws Exception {
+		PostFile postFile = new PostFile();
+		postFile.post();
 	}
 
 }
