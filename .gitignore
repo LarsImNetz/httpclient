@@ -1,0 +1,15 @@
+*.class
+# Package Files #
+*.jar
+*.war
+*.ear
+target
+.settings
+.project
+.classpath
+derby.log
+*~
+bin
+
+npm-debug.log
+C:\nppdf32Log\debuglog.txt
