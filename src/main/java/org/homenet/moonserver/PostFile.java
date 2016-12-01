@@ -5,11 +5,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpRequest;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
-import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.InputStreamBody;
@@ -20,13 +19,14 @@ import org.apache.http.util.EntityUtils;
 
 public class PostFile {
 	public void post() throws Exception {
-		CloseableHttpClient httpclient = HttpClients.createDefault();
+		RequestConfig config = RequestConfig.custom().setConnectTimeout(10).build();
+		CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(config).build();
 		try {
-			HttpPost postRequest = new HttpPost("http://qa.moonserver.homenet.org/upload.php");
+			HttpPost postRequest = new HttpPost("http://test.linux.bogus/upload.php");
 			// postRequest.addHeader("Authorization",authHeader);
 //			String boundary = "-------------" + System.currentTimeMillis();
 // 			postRequest.addHeader("Content-type", "multipart/form-data; boundary=" + boundary);
-			
+
 			File file = new File("src/main/resources/justATest.txt");
 			// TODO: das upload definitiv stärker schützen! Wir wollen nur bestimmte Typen zulassen.
 			// File file = new File("src/main/resources/killer.php");
@@ -44,9 +44,9 @@ public class PostFile {
 			HttpEntity httpEntity = MultipartEntityBuilder.create()
 //					.setMode(HttpMultipartMode.BROWSER_COMPATIBLE)
 //					.setBoundary(boundary)
+					.addPart("privateuserfile", bin)
 					.addPart("other", isb)
 					.addPart("comment", comment)
-					.addPart("userfile", bin)
 					.build();
 
 			postRequest.setEntity(httpEntity);
