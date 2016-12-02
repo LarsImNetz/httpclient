@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Upload"
+AuthUserFile ../../private/config/apache/.htpasswd_vergleich_upload
+require valid-user

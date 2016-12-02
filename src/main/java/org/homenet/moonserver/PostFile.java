@@ -5,6 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -13,14 +16,22 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 public class PostFile {
+	
+	private static final String UPLOAD_USER = "user";
+	private static final String UPLOAD_PASSWORD = "password";
+
 	public void post() throws Exception {
 		RequestConfig config = RequestConfig.custom().setConnectTimeout(10).build();
-		CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(config).build();
+		CredentialsProvider credentials = new BasicCredentialsProvider();
+		credentials.setCredentials(new AuthScope("test.linux.bogus", 80), new UsernamePasswordCredentials(UPLOAD_USER, UPLOAD_PASSWORD));
+
+		CloseableHttpClient httpclient = HttpClients.custom().setDefaultCredentialsProvider(credentials).setDefaultRequestConfig(config).build();
 		try {
 			HttpPost postRequest = new HttpPost("http://test.linux.bogus/upload.php");
 			// postRequest.addHeader("Authorization",authHeader);
