@@ -5,8 +5,11 @@
 
 	$filePath = '../fileadmin/user_download/baufi-testsiegel/';
 	
+
 	function output() {
-		echo '<html><head><title>Upload</title></head><body>';	
+		global $filePath;
+		
+		echo '<html><head><title>Upload</title></head><body>\n';	
 	
 		if(isset($_REQUEST['submit']) && $_REQUEST['submit'] == "senden") {
 		
@@ -18,11 +21,13 @@
 				die('Maximale Dateigroesse ueberschritten');
 			}
 
-			$isUploaded = move_uploaded_file($theFile['tmp_name'], $filePath.$theFile['name']);
+			$newFile = $filePath.$theFile['name'];
+			echo '<span>New file is: '.$newFile.'</span>';
+			$isUploaded = move_uploaded_file($theFile['tmp_name'], $newFile);
 			if (!$isUploaded) {
 				die('Fehler beim Upload');
 			}
-			echo '<span style="color:green;">Upload erfolgreich</span>';		
+			echo '<span style="color:green;">Upload erfolgreich</span>\n';
 		}
 		echo get_form();
 		echo '</body></html>';
@@ -38,10 +43,12 @@
 	}
 	
 	function check_mimetype($mimeType) {
+		global $allowedMimeTypes;
 		return in_array($mimeType, $allowedMimeTypes);	
 	}
 
 	function check_filesize($filesize) {
+		global $maxFileSize;
 		return $filesize < $maxFileSize;
 	}
 	
