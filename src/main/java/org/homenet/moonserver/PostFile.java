@@ -27,7 +27,14 @@ public class PostFile {
 	public void post() throws Exception {
 		RequestConfig config = RequestConfig.custom().setConnectTimeout(10).build();
 
-		CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(config).build();
+		// TODO: try https
+		//	SSLContext sslContext = new SSLContextBuilder()
+		//  .loadTrustMaterial(null, (certificate, authType) -> true).build();
+
+		CloseableHttpClient httpclient = HttpClients.custom()
+//			.setSSLContext(sslContext)
+//      .setSSLHostnameVerifier(new NoopHostnameVerifier())
+				.setDefaultRequestConfig(config).build();
 		try {
 			HttpPost postRequest = new HttpPost("http://test.linux.bogus/upload.php");
 			// postRequest.addHeader("Authorization",authHeader);
